@@ -158,3 +158,5 @@ b_acyl_pub <- ggplot(data = kinetics_data) +
   geom_point(mapping = aes(x = Time_hours, y = B_acyl_pct), data = . %>% filter(LG %in% c("OTFA")), size = 5) +
   labs(y=expression(paste(beta,"-Acyl product (%)")),x='Time (hours)') +
   themething
+
+#in order to reproduce any of the graphs, simply type the name of any of them into the console e.g. kinetics_plot_pub
