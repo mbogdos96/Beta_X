@@ -1,3 +1,4 @@
+#start here
 install.packages('tidyverse')
 install.packages('sicegar')
 install.packages('nlme')
@@ -6,7 +7,7 @@ install.packages('propagate')
 install.packages('investr')
 install.packages('ggrepel')
 install.packages("ragg")
-
+#next here
 library(investr)
 library(sicegar)
 library(minpack.lm)
@@ -15,8 +16,8 @@ library(nls2)
 library(tidyverse)
 library(propagate)
 library(ggrepel)
-library(ragg)
-library(svglite)
+
+#next here
 
 tetrakis_data <- read_csv('beta_X_R_import_tetrakis.csv')
 kinetics_data <- read_csv('beta_X_R_import_kinetics.csv')
@@ -66,8 +67,6 @@ pred.intervPPh3 <- as_tibble(predFit(gompertz.pph3, newdata = new.datatetrakis, 
 
 TEP_lr <- lm(Selectivity ~ TEP,(data = TEPdata))
 
-#look at tBu data as ee scale
-
 PtBu3_ee <- tBu_data %>% mutate(pct_Hyd = case_when(H_X > 0 ~ (100*H_X)/(1+H_X), Selectivity >= 1 ~ 0, Selectivity <= -1 ~ 100), pct_X = case_when(X_H > 0 ~ (100*X_H)/(1+X_H), Selectivity >= 1 ~ 100, Selectivity <= -1 ~ 0), ee_t_Scale = pct_X - pct_Hyd)
 
 gompertz.ptbu3ee <- nlsLM(ee_t_Scale~A*exp(-exp(B-C*pKa))+D, start = list(A=-200,B=-500,C=200,D=100), data = PtBu3_ee)
@@ -79,8 +78,6 @@ interval_ptbuee <- as_tibble(predFit(gompertz.ptbu3ee, newdata = new.data, inter
 new.dataPtbu3ee <- data.frame(pKa=seq(-5,2,by=0.1))
 pred.intervee <- as_tibble(predFit(gompertz.ptbu3ee, newdata = new.dataPtbu3, interval = "prediction",level = 0.67)) %>%
   mutate(pKa= new.dataPtbu3$pKa)
-
-#compare various logistic regression functions
 
 tBu3pl <- nlsLM(Selectivity~A + B/(1+exp(C*pKa)), start = list(A=-1,B=2,C=-1), data = PtBu3_ee)
 
