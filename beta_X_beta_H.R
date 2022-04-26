@@ -97,29 +97,33 @@ themething <- theme(axis.line = element_line(size=1), panel.background=element_r
 
 themething_big_labs <- theme(axis.line = element_line(size=1), text = element_text(size=20), panel.background=element_rect(fill="white"), axis.ticks = element_line(size=1), axis.text = element_text(size = rel(1.5)), axis.title = element_text(size = rel(1.5)),plot.title = element_text(size=rel(1.75),face="bold"),plot.title.position = "panel")
 
-sel_PtBu3_imgs_pub <- ggplot(data=PtBu3) +
+sel_PtBu3_imgs_pub <- ggplot(data=NULL) +
   geom_ribbon(data = interval, aes(x= pKa, ymin=lwr, ymax=upr), alpha = 0.7, inherit.aes = FALSE, fill="gray") + 
   geom_ribbon(data = pred.interv, aes(x=pKa,ymin=lwr, ymax=upr), alpha = 0.3, inherit.aes = FALSE, fill = "gray") +
   geom_function(fun = ~predict(gompertz.ptbu3,data.frame(pKa = .x)),size=1,colour="black") +
-  geom_point(mapping = aes(x=pKa, y=Selectivity),size=4,colour="purple") +
-  geom_label_repel(data = filter(PtBu3, Selectivity >= 0.96), mapping = aes(x=pKa,y=Selectivity, label = paste0(Leaving_Group)), nudge_y = -0.1, nudge_x = 0, size=5) +
-  geom_label_repel(data = filter(PtBu3, Selectivity < 0.96 & Selectivity > -0.5), mapping = aes(x=pKa,y=Selectivity, label = paste0(Leaving_Group)), nudge_y = 0, nudge_x = 2, size=5) +
-  geom_label_repel(data = filter(PtBu3, Selectivity < -0.5 & Selectivity > -1), mapping = aes(x=pKa,y=Selectivity, label = paste0(Leaving_Group)), nudge_y = -0.1, nudge_x = -5, size=5) +
-  geom_label_repel(data = filter(PtBu3, Selectivity <= -1 & pKa < 15), mapping = aes(x=pKa,y=Selectivity, label = paste0(Leaving_Group)), nudge_y = 0.4, nudge_x = 0, size=5) +
+  geom_point(data = filter(PtBu3, Selectivity > 0), mapping = aes(x=pKa,y=Selectivity), colour = "#A943E2",size=6) +
+  geom_point(data = filter(PtBu3, Selectivity < 0), mapping = aes(x=pKa,y=Selectivity), colour = "#377337",size=6) +
+  geom_label_repel(data = filter(PtBu3, Selectivity >= 0.96), mapping = aes(x=pKa,y=Selectivity, label = paste0(Leaving_Group)), nudge_y = -0.1, nudge_x = 0, size=7) +
+  geom_label_repel(data = filter(PtBu3, Selectivity < 0.96 & Selectivity > -0.5), mapping = aes(x=pKa,y=Selectivity, label = paste0(Leaving_Group)), nudge_y = 0, nudge_x = 3, size=7) +
+  geom_label_repel(data = filter(PtBu3, Selectivity < -0.5 & Selectivity > -1), mapping = aes(x=pKa,y=Selectivity, label = paste0(Leaving_Group)), nudge_y = -0.1, nudge_x = -5, size=7) +
+  geom_label_repel(data = filter(PtBu3, Selectivity <= -1 & pKa < 15), mapping = aes(x=pKa,y=Selectivity, label = paste0(Leaving_Group)), nudge_y = 0.4, nudge_x = 0, size=7) +
   labs(y=expression(paste(Selectivity[X/H])), x=expression(paste(pK[aH]))) +
+  scale_x_continuous(breaks = c(-10,-5,0,5,10,15),limits = c(-10,15)) +
   themething_big_labs
 
-sel_PPh3_pub_img <- ggplot(data=PPh3) +
+sel_PPh3_pub_img <- ggplot(data=NULL) +
   geom_ribbon(data=interval_PPh3, aes(x=pKa, ymin=lwr, ymax=upr),alpha=0.2) +
   geom_ribbon(data = pred.intervPPh3, aes(x=pKa,ymin=lwr, ymax=upr),alpha=0.08) +
   geom_function(fun = ~predict(gompertz.pph3,data.frame(LGpKa=.x)),size=1,colour="black") +
-  geom_point(mapping = aes(x = LGpKa, y=Sel_scale),size=4,colour="purple") +
-  geom_label_repel(data = filter(PPh3, Sel_scale >= 0.96), mapping = aes(x=LGpKa,y=Sel_scale, label = paste0(X_group)), nudge_y = -0.1, nudge_x = -2, size=5) +
-  geom_label_repel(data = filter(PPh3, Sel_scale < 0.96 & Sel_scale > -0.5), mapping = aes(x=LGpKa,y=Sel_scale, label = paste0(X_group)), nudge_y = 0, nudge_x = 2, size=5) +
-  geom_label_repel(data = filter(PPh3, Sel_scale < -0.5 & Sel_scale >= -1), mapping = aes(x=LGpKa,y=Sel_scale, label = paste0(X_group)), nudge_y = -0.1, nudge_x = -1, size=5) +
+  geom_point(data = filter(PPh3, Sel_scale > 0), mapping = aes(x=LGpKa,y=Sel_scale), colour = "#A943E2",size=6) +
+  geom_point(data = filter(PPh3, Sel_scale < 0), mapping = aes(x=LGpKa,y=Sel_scale), colour = "#377337",size=6) +
+  geom_label_repel(data = filter(PPh3, Sel_scale >= 0.96), mapping = aes(x=LGpKa,y=Sel_scale, label = paste0(X_group)), nudge_y = -0.3, nudge_x = -3, size=7) +
+  geom_label_repel(data = filter(PPh3, Sel_scale < 0.96 & Sel_scale > -0.5), mapping = aes(x=LGpKa,y=Sel_scale, label = paste0(X_group)), nudge_y = 0, nudge_x = 2, size=7) +
+  geom_label_repel(data = filter(PPh3, Sel_scale < -0.5 & Sel_scale >= -1), mapping = aes(x=LGpKa,y=Sel_scale, label = paste0(X_group)), nudge_y = -0.1, nudge_x = -1, size=7) +
   labs(y=expression(paste(Selectivity[X/H])), x=expression(paste(pK[aH]))) +
+  scale_x_continuous(breaks = c(-10,-5,0,5,10,15),limits = c(-10,15)) +
   themething_big_labs
-
+  
 both_L_labels_pub <- ggplot(data=NULL) +
   geom_ribbon(data = interval, aes(x= pKa, ymin=lwr, ymax=upr), alpha = 0.7, inherit.aes = FALSE, fill="gray") + 
   geom_ribbon(data = pred.interv, aes(x=pKa,ymin=lwr, ymax=upr), alpha = 0.3, inherit.aes = FALSE, fill = "gray") +
@@ -127,23 +131,22 @@ both_L_labels_pub <- ggplot(data=NULL) +
   geom_ribbon(data = pred.intervPPh3, aes(x=pKa,ymin=lwr, ymax=upr),alpha=0.08) +
   geom_function(fun = ~predict(gompertz.ptbu3,data.frame(pKa = .x)),size=1,colour="black") +
   geom_function(fun = ~predict(gompertz.pph3,data.frame(LGpKa=.x)),size=1,colour="black") +
-  geom_point(data = PtBu3, mapping = aes(x=pKa,y=Selectivity), colour = 'purple', size =4) +
-  geom_point(data = tetrakis_data, mapping = aes(x=pKa,y=Selectivity), colour = 'green', size =4) +
-  geom_label_repel(data = filter(PtBu3, Selectivity >= 0.96), mapping = aes(x=pKa,y=Selectivity, label = paste0(Leaving_Group)), nudge_y = -0.1, nudge_x = 0, size=5) +
-  geom_label_repel(data = filter(PtBu3, Selectivity < 0.96 & Selectivity > -0.5), mapping = aes(x=pKa,y=Selectivity, label = paste0(Leaving_Group)), nudge_y = 0, nudge_x = 2, size=5) +
-  geom_label_repel(data = filter(PtBu3, Selectivity < -0.5 & Selectivity > -1), mapping = aes(x=pKa,y=Selectivity, label = paste0(Leaving_Group)), nudge_y = -0.1, nudge_x = -5, size=5) +
-  geom_label_repel(data = filter(PtBu3, Selectivity <= -1 & pKa < 15), mapping = aes(x=pKa,y=Selectivity, label = paste0(Leaving_Group)), nudge_y = 0.4, nudge_x = 0, size=5) +
-  geom_label_repel(data = filter(PPh3, Sel_scale >= 0.96), mapping = aes(x=LGpKa,y=Sel_scale, label = paste0(X_group)), nudge_y = -0.1, nudge_x = -2, size=5) +
-  geom_label_repel(data = filter(PPh3, Sel_scale < 0.96 & Sel_scale > -0.5), mapping = aes(x=LGpKa,y=Sel_scale, label = paste0(X_group)), nudge_y = 0, nudge_x = 2, size=5) +
-  geom_label_repel(data = filter(PPh3, Sel_scale < -0.5 & Sel_scale >= -1), mapping = aes(x=LGpKa,y=Sel_scale, label = paste0(X_group)), nudge_y = -0.1, nudge_x = -1, size=5) +
-  labs(y=expression(paste(Selectivity[X/H])), x=expression(paste(pK[a]))) +
-  themething
-
-TEP_lab_pub <- ggplot(TEPdata) +
-  geom_function(fun = ~predict(TEP_lr,data.frame(TEP = .x)),size=1,colour="black") +
-  geom_point(mapping = aes(x=TEP,y=Selectivity), colour = "purple",size=5) +
-  geom_label_repel(data = TEPdata, mapping = aes(x=TEP,y=Selectivity, label = paste0(Substituent)), nudge_y = 0.1, nudge_x = 0, size=10) +
-  labs(y=expression(paste(Selectivity[X/H])), x=expression(paste(TEP(cm^-1)))) +
+  geom_point(data = filter(PtBu3, Selectivity > 0), mapping = aes(x=pKa,y=Selectivity), colour = "#A943E2",size=6) +
+  geom_point(data = filter(PtBu3, Selectivity < 0), mapping = aes(x=pKa,y=Selectivity), colour = "#377337",size=6) +
+  geom_point(data = filter(PPh3, Sel_scale > 0), mapping = aes(x=LGpKa,y=Sel_scale), colour = "#A943E2",size=6) +
+  geom_point(data = filter(PPh3, Sel_scale < 0), mapping = aes(x=LGpKa,y=Sel_scale), colour = "#377337",size=6) +
+  labs(y=expression(paste(Selectivity[X/H])), x=expression(paste(pK[aH]))) +
+  scale_x_continuous(breaks = c(-10,-5,0,5,10,15),limits = c(-10,15)) +
+  themething_big_labs
+  
+TEP_lab_pub_alt <- ggplot(data = NULL) +
+  geom_point(data = filter(TEPdata, Selectivity > 0), mapping = aes(x=TEP,y=Selectivity), colour = "#A943E2",size=10) +
+  geom_point(data = filter(TEPdata, Selectivity < 0), mapping = aes(x=TEP,y=Selectivity), colour = "#377337",size=10) +
+  geom_label_repel(data = filter(TEPdata, TEP < 2067), mapping = aes(x=TEP,y=Selectivity, label = paste0(Substituent)), nudge_y = -0.375, nudge_x = 0, size=12) +
+  geom_label_repel(data = filter(TEPdata, TEP > 2067), mapping = aes(x=TEP,y=Selectivity, label = paste0(Substituent)), nudge_y = 0.1, nudge_x = -1.5, size=12) +
+  labs(y=expression(paste(Selectivity[X/H])), x=expression(paste(TEP (cm^-1)))) +
+  scale_y_continuous(breaks = c(-1,-0.5,0,0.5,1),limits = c(-1.2,1.2)) +
+  scale_x_continuous(breaks = c(2055,2060,2065,2070,2075),limits = c(2054,2076)) +
   themething_big_labs
 
 kinetics_plot_pub <- ggplot(data = kinetics_data, aes(x = Time_hours, y=Selectivity, group = LG, colour = LG)) +
@@ -158,5 +161,40 @@ b_acyl_pub <- ggplot(data = kinetics_data) +
   geom_point(mapping = aes(x = Time_hours, y = B_acyl_pct), data = . %>% filter(LG %in% c("OTFA")), size = 5) +
   labs(y=expression(paste(beta,"-Acyl product (%)")),x='Time (hours)') +
   themething
+
+#E/Z ratios and barriers
+
+ez_data <- read.csv("E_Z_ratios.csv", sep = "")
+
+EZ_ratio_plot <- ggplot(data = ez_data, aes(x = time_min, y=Ezratio, colour = X)) +
+  geom_point(mapping = aes(x=time_min, y=Ezratio), data = . %>% filter(X %in% c("OMs")), size=4) +
+  geom_point(mapping = aes(x=time_min, y=Ezratio), data = . %>% filter(X %in% c("OTFA")), size=4) +
+  geom_point(mapping = aes(x=time_min, y=Ezratio), data = . %>% filter(X %in% c("OAc")), size=4) +
+  labs(y="E/Z Ratio", x='Time (min)') +
+  themething
+
+ddg_pka <- function(pKa) {
+  ddg <- (-8.3145 * 298 * log(-(-1.9693456 + (0.9946751 - 1)*exp(exp(-3.8275428 -1.5370155*pKa)))/(-1.9693456 + (0.9946751 + 1)*exp(exp(-3.8275428 -1.5370155*pKa)))))/(4184)
+  return(ddg)
+}
+
+pka_for_ddg_test <- seq(-5,5,by=0.1)
+
+ddg_gen <- data.frame(pka_for_ddg_test) %>%
+  rename(pKa = "pka_for_ddg_test") %>%
+  rowwise() %>%
+  mutate(ddg = ddg_pka(pKa))
+
+plot_ddg_pka <- ggplot(data = ddg_gen, mapping = aes(x=pKa,y=ddg)) +
+  geom_point() + 
+  labs(y="(kcal/mol)", x=expression(paste(pK[aH]))) +
+  themething_big_labs
+
+ddg_on_ee <- PtBu3_ee %>%
+  mutate(ddg_pred = ddg_pka(pKa))
+
+plot_ddg_ee <- ggplot(data = ddg_on_ee, mapping = aes(y=ee_Scale,x=ddg_pred)) +
+  geom_point() + 
+  themething_big_labs
 
 #in order to reproduce any of the graphs, simply type the name of any of them into the console e.g. kinetics_plot_pub
